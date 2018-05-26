@@ -14,14 +14,14 @@ import android.support.v4.app.FragmentTransaction;
  * A placeholder fragment containing a simple view.
  */
 public class TestFragment extends Fragment {
-    static String myName;
+    String myName;
 
     public TestFragment() {
     }
 
     public static TestFragment newInstance(String theName) {
         Bundle bundle = new Bundle();
-        bundle.putString(myName, theName);
+        bundle.putString("Name", theName);
         //android.util.Log.d("CREATE", "Fragment successfully created");
         TestFragment fragment = new TestFragment();
         fragment.setArguments(bundle);
@@ -31,7 +31,7 @@ public class TestFragment extends Fragment {
 
     protected void readBundle(Bundle bundle){
         if(bundle != null) {
-            myName = bundle.getString(myName);
+            myName = bundle.getString("Name");
         }
     }
 
@@ -51,7 +51,7 @@ public class TestFragment extends Fragment {
 
                 String testString = "name" + myName;
                 transaction.addToBackStack(null);
-                TestFragment fragment = TestFragment.newInstance(testString);
+                SecondFragment fragment = (SecondFragment) SecondFragment.newInstance(testString);
 
                 transaction.replace(R.id.fragment_container, fragment);
 

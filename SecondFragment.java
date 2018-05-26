@@ -14,6 +14,16 @@ import android.widget.TextView;
 public class SecondFragment extends TestFragment {
     String myName;
 
+    public static SecondFragment newInstance(String theName) {
+        Bundle bundle = new Bundle();
+        bundle.putString("Name", theName);
+        //android.util.Log.d("CREATE", "Fragment successfully created");
+        SecondFragment fragment = new SecondFragment();
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -28,9 +38,9 @@ public class SecondFragment extends TestFragment {
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
 
-                String testString = "name" + myName;
+                String testString = "sec " + myName;
                 transaction.addToBackStack(null);
-                TestFragment fragment = TestFragment.newInstance(testString);
+                TestFragment fragment = (TestFragment) TestFragment.newInstance(testString);
 
                 transaction.replace(R.id.fragment_container, fragment);
 

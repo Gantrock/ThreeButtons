@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
 
-            TestFragment first = TestFragment.newInstance("First");
+            TestFragment first = (TestFragment) TestFragment.newInstance("First");
 
             first.setArguments(getIntent().getExtras());
 
