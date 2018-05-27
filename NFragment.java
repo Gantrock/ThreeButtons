@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Button;
-import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.util.Log;
 
@@ -15,22 +14,26 @@ import android.util.Log;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class TestFragment extends Fragment {
+public class NFragment extends Fragment {
 
     public AttachListener mListener;
 
-    String myName;
+    String mName;
+    String mPath;
+    String mLayout;
+    String mTransitions;
     TextView mText;
     Button mButton;
 
-    public TestFragment() {
+    public NFragment() {
     }
 
-    public static TestFragment newInstance(String theName) {
+    public static NFragment newInstance(String theName, String layout, String transition) {
         Bundle bundle = new Bundle();
         bundle.putString("Name", theName);
-        android.util.Log.d("NEW INSTANCE", "theName: " + theName);
-        TestFragment fragment = new TestFragment();
+        bundle.putString("Layout", layout);
+        bundle.putString("Transition", transition);
+        NFragment fragment = new NFragment();
         fragment.setArguments(bundle);
 
         return fragment;
@@ -38,8 +41,9 @@ public class TestFragment extends Fragment {
 
     protected void readBundle(Bundle bundle){
         if(bundle != null) {
-            myName = bundle.getString("Name");
-            Log.d("BUNDLE", "bundle is read: " + myName);
+            mName = bundle.getString("Name");
+            mLayout = bundle.getString("Layout");
+            mTransitions = bundle.getString("Transition");
         }
     }
 
@@ -60,41 +64,27 @@ public class TestFragment extends Fragment {
         readBundle(getArguments());
         View v = inflater.inflate(R.layout.fragment_main, container, false);
 
-        mText = v.findViewById(R.id.text_out);
+        mText = v.findViewById(R.id.textView);
         //if(mText != null) Log.d("CREATE","mText successfully created");
         mButton = v.findViewById(R.id.button);
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.buttonPressed();
+            }
+
+        });
         //if(mButton != null) Log.d("CREATE","mButton successfully created");
-        Log.d("ON CREATE", "myName: " + myName);
+        Log.d("ON CREATE", "myName: " + mName);
         return v;
     }
 
     @Override
     public void onViewCreated(View v,
             Bundle savedInstanceState) {
-        Log.d("ON CREATED", "myName: " + myName);
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
-
-                String testString = getName() + " name";
-                Log.d("ON CLICK", "testString: " + testString);
-                transaction.addToBackStack(null);
-                TestFragment fragment = TestFragment.newInstance(testString);
-                //if(mText != null) Log.d("MAINTAIN","mText exists");
-
-                transaction.replace(R.id.fragment_container, fragment);
-
-                transaction.commit();
-                //sb.append(" tacos");
-                //String item = sb.toString();
-                //((TextView)findViewById(R.id.result)).setText(fragment.myName);
-            }
-
-        });
-        //mListener.updateTextView(mText, myName);
-        updateText(myName);
+        Log.d("ON CREATED", "myName: " + mName);
+        mListener.updateTextView(mText, mName);
+        //updateText(myName);
     }
 
     public void updateText(String text) {
@@ -103,12 +93,13 @@ public class TestFragment extends Fragment {
         mText.setText(text);
     }
 
-    private String getName() {
-        Log.d("GET NAME", "theName: " + myName);
-        return myName;
+    public String getName() {
+        Log.d("GET NAME", "theName: " + mName);
+        return mName;
     }
 
     public interface AttachListener {
+        public void buttonPressed();
         public void updateTextView(TextView tv, String s);
     }
 

@@ -7,16 +7,12 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.support.v4.app.FragmentTransaction;
 
-public class MainActivity extends AppCompatActivity implements TestFragment.AttachListener{
-    int testCount;
-    //TextView name;
-    //Button nextF;
-    //StringBuilder sb;
+public class MainActivity extends AppCompatActivity implements NFragment.AttachListener{
+
+    NFragment mCurrentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        testCount = 0;
-        //sb = new StringBuilder();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -30,9 +26,8 @@ public class MainActivity extends AppCompatActivity implements TestFragment.Atta
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
 
-            TestFragment first = TestFragment.newInstance("First");
-
-            //first.setArguments(getIntent().getExtras());
+            NFragment first = NFragment.newInstance("First", "R.layout.fragment_main.xml", "");
+            mCurrentFragment = first;
 
             transaction.add(R.id.fragment_container, first).commit();
 
@@ -40,9 +35,22 @@ public class MainActivity extends AppCompatActivity implements TestFragment.Atta
 
     }
 
+    public void buttonPressed() {
+        String name = mCurrentFragment.getName() + " First";
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+
+        transaction.addToBackStack(null);
+        NFragment fragment = NFragment.newInstance(name, "R.layout.fragment_first.xml", "");
+        mCurrentFragment = fragment;
+
+        transaction.add(R.id.fragment_container, fragment).commit();
+    }
+
     public void updateTextView(TextView tv, String s) {
         tv.setText(s);
-}
+    }
+
 
    /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
