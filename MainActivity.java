@@ -7,7 +7,7 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.support.v4.app.FragmentTransaction;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TestFragment.AttachListener{
     int testCount;
     //TextView name;
     //Button nextF;
@@ -32,13 +32,17 @@ public class MainActivity extends AppCompatActivity {
 
             TestFragment first = TestFragment.newInstance("First");
 
-            first.setArguments(getIntent().getExtras());
+            //first.setArguments(getIntent().getExtras());
 
             transaction.add(R.id.fragment_container, first).commit();
 
         }
 
     }
+
+    public void updateTextView(TextView tv, String s) {
+        tv.setText(s);
+}
 
    /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
