@@ -2,10 +2,7 @@ package projects.underhill.threebuttons;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Button;
 import android.support.v4.app.FragmentTransaction;
@@ -33,20 +30,13 @@ public class MainActivity extends AppCompatActivity {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
 
-            TestFragment first = (TestFragment) TestFragment.newInstance("First");
+            TestFragment first = TestFragment.newInstance("First");
 
             first.setArguments(getIntent().getExtras());
 
             transaction.add(R.id.fragment_container, first).commit();
 
         }
-
-
-        //name = findViewById(R.id.result);
-        //name.setText("result");
-        //((TextView)findViewById(R.id.result)).setText("start");
-
-
 
     }
 
