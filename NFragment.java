@@ -20,7 +20,6 @@ public class NFragment extends Fragment {
     public AttachListener mListener;
 
     String mName;
-    String mPath;
     String mLayout;
     String mTransitions;
     TextView mText;

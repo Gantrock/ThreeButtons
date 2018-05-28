@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 public class MainActivity extends AppCompatActivity implements NFragment.AttachListener{
 
     NFragment mCurrentFragment;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements NFragment.AttachL
             }
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+            transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out, android.R.animator.fade_in, android.R.animator.fade_out);
 
             NFragment first = NFragment.newInstance("First", "R.layout.fragment_main.xml", "");
             mCurrentFragment = first;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements NFragment.AttachL
     public void buttonPressed() {
         String name = mCurrentFragment.getName() + " First";
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+        transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out, android.R.animator.fade_in, android.R.animator.fade_out);
 
         transaction.addToBackStack(null);
         NFragment fragment = NFragment.newInstance(name, "R.layout.fragment_first.xml", "");
