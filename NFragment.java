@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Button;
 import android.content.Context;
@@ -62,11 +63,28 @@ public class NFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         readBundle(getArguments());
-        View v = inflater.inflate(R.layout.fragment_main, container, false);
+        //View v = inflater.inflate(R.layout.fragment_main, container, false);
+        LinearLayout v = new LinearLayout(getActivity());
+        v.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        v.setOrientation(LinearLayout.VERTICAL);
+        v.setBaselineAligned(false);
+        //v.addView to add more objects
+        Button tempB = new Button(getActivity());
+        //tempB.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        tempB.setText("Button");
+        v.addView(tempB);
+        mButton = tempB;
 
+        TextView tempTV = new TextView(getActivity());
+        //tempTV.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        v.addView(tempTV);
+        mText = tempTV;
+
+        /*
         mText = v.findViewById(R.id.textView);
         //if(mText != null) Log.d("CREATE","mText successfully created");
         mButton = v.findViewById(R.id.button);
+        */
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,7 +94,7 @@ public class NFragment extends Fragment {
         });
         //if(mButton != null) Log.d("CREATE","mButton successfully created");
         Log.d("ON CREATE", "myName: " + mName);
-        return v;
+        return (View) v;
     }
 
     @Override

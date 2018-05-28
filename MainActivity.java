@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements NFragment.AttachL
         NFragment fragment = NFragment.newInstance(name, "R.layout.fragment_first.xml", "");
         mCurrentFragment = fragment;
 
-        transaction.add(R.id.fragment_container, fragment).commit();
+        transaction.replace(R.id.fragment_container, fragment).commit();
     }
 
     public void updateTextView(TextView tv, String s) {
