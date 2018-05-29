@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Button;
 import android.content.Context;
@@ -20,19 +19,26 @@ public class NFragment extends Fragment {
     public AttachListener mListener;
 
     String mName;
-    String mLayout;
-    String mTransitions;
+    String mString;
+    int mLayout = R.layout.dynamic;
+    int animEnter;
+    int animExit;
+    int animPopEnter;
+    int animPopExit;
     TextView mText;
     Button mButton;
 
     public NFragment() {
     }
 
-    public static NFragment newInstance(String theName, String layout, String transition) {
+    public static NFragment newInstance(String theName, Integer layout, Integer enter, Integer exit, Integer popEnter, Integer popExit) {
         Bundle bundle = new Bundle();
         bundle.putString("Name", theName);
-        bundle.putString("Layout", layout);
-        bundle.putString("Transition", transition);
+        bundle.putInt("Layout", layout);
+        bundle.putInt("AnimEnter", enter);
+        bundle.putInt("AnimExit", exit);
+        bundle.putInt("AnimPopEnter", popEnter);
+        bundle.putInt("AnimPopExit", popExit);
         NFragment fragment = new NFragment();
         fragment.setArguments(bundle);
 
@@ -42,8 +48,11 @@ public class NFragment extends Fragment {
     protected void readBundle(Bundle bundle){
         if(bundle != null) {
             mName = bundle.getString("Name");
-            mLayout = bundle.getString("Layout");
-            mTransitions = bundle.getString("Transition");
+            mLayout = bundle.getInt("Layout");
+            animEnter = bundle.getInt("AnimEnter");
+            animExit = bundle.getInt("AnimExit");
+            animPopEnter = bundle.getInt("AnimPopEnter");
+            animPopExit = bundle.getInt("AnimPopExit");
         }
     }
 
@@ -62,8 +71,8 @@ public class NFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         readBundle(getArguments());
-        //View v = inflater.inflate(R.layout.fragment_main, container, false);
-        LinearLayout v = new LinearLayout(getActivity());
+        View v = inflater.inflate(mLayout, container, false);
+        /*LinearLayout v = new LinearLayout(getActivity());
         v.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         v.setOrientation(LinearLayout.VERTICAL);
         v.setBaselineAligned(false);
@@ -77,13 +86,12 @@ public class NFragment extends Fragment {
         TextView tempTV = new TextView(getActivity());
         //tempTV.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         v.addView(tempTV);
-        mText = tempTV;
+        mText = tempTV;*/
 
-        /*
+
         mText = v.findViewById(R.id.textView);
-        //if(mText != null) Log.d("CREATE","mText successfully created");
         mButton = v.findViewById(R.id.button);
-        */
+
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,33 +99,41 @@ public class NFragment extends Fragment {
             }
 
         });
-        //if(mButton != null) Log.d("CREATE","mButton successfully created");
-        Log.d("ON CREATE", "myName: " + mName);
         return (View) v;
     }
 
+    public int[] getAnimation(){
+        int[] transitions = new int[4];
+        transitions[0] = animEnter;
+        transitions[1] = animExit;
+        transitions[2] = animPopEnter;
+        transitions[3] = animPopExit;
+        return transitions;
+    }
     @Override
     public void onViewCreated(View v,
             Bundle savedInstanceState) {
-        Log.d("ON CREATED", "myName: " + mName);
-        mListener.updateTextView(mText, mName);
-        //updateText(myName);
+        if(mString == null) {mString = " ";}
+        Log.d("NFRAGMENT","View Created with class name: " + mName);
+        mListener.updateTextView(mText, mString);
     }
 
     public void updateText(String text) {
-        Log.d("CREATE", "updateText called: " + text + " old text: " + mText.getText());
-        //TextView textView = v.findViewById(R.id.result);
-        mText.setText(text);
+        mString = text;
     }
 
-    public String getName() {
+    public String getFName() {
         Log.d("GET NAME", "theName: " + mName);
         return mName;
     }
 
+    public String getMString(){
+        return mString;
+    }
+
     public interface AttachListener {
         public void buttonPressed();
-        public void updateTextView(TextView tv, String s);
+        public void updateTextView(TextView tv, String string);
     }
 
 }
