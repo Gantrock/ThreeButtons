@@ -1,5 +1,6 @@
 package projects.underhill.threebuttons;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,6 +21,8 @@ public class NFragment extends Fragment {
 
     String mName;
     String mString;
+    String nextFragment = "second_fragment.json";
+    //default layout, is empty except for an invisible button and emtp textView
     int mLayout = R.layout.dynamic;
     int animEnter;
     int animExit;
@@ -31,14 +34,16 @@ public class NFragment extends Fragment {
     public NFragment() {
     }
 
-    public static NFragment newInstance(String theName, Integer layout, Integer enter, Integer exit, Integer popEnter, Integer popExit) {
+    public static NFragment newInstance(String theName, String next, Integer layout, Integer enter, Integer exit, Integer popEnter, Integer popExit, String text) {
         Bundle bundle = new Bundle();
         bundle.putString("Name", theName);
+        bundle.putString("Next", next);
         bundle.putInt("Layout", layout);
         bundle.putInt("AnimEnter", enter);
         bundle.putInt("AnimExit", exit);
         bundle.putInt("AnimPopEnter", popEnter);
         bundle.putInt("AnimPopExit", popExit);
+        bundle.putString("Extra", text);
         NFragment fragment = new NFragment();
         fragment.setArguments(bundle);
 
@@ -48,11 +53,13 @@ public class NFragment extends Fragment {
     protected void readBundle(Bundle bundle){
         if(bundle != null) {
             mName = bundle.getString("Name");
+            nextFragment = bundle.getString("Next");
             mLayout = bundle.getInt("Layout");
             animEnter = bundle.getInt("AnimEnter");
             animExit = bundle.getInt("AnimExit");
             animPopEnter = bundle.getInt("AnimPopEnter");
             animPopExit = bundle.getInt("AnimPopExit");
+            mString = bundle.getString("Extra");
         }
     }
 
@@ -68,26 +75,10 @@ public class NFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         readBundle(getArguments());
         View v = inflater.inflate(mLayout, container, false);
-        /*LinearLayout v = new LinearLayout(getActivity());
-        v.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        v.setOrientation(LinearLayout.VERTICAL);
-        v.setBaselineAligned(false);
-        //v.addView to add more objects
-        Button tempB = new Button(getActivity());
-        //tempB.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        tempB.setText("Button");
-        v.addView(tempB);
-        mButton = tempB;
-
-        TextView tempTV = new TextView(getActivity());
-        //tempTV.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        v.addView(tempTV);
-        mText = tempTV;*/
-
 
         mText = v.findViewById(R.id.textView);
         mButton = v.findViewById(R.id.button);
@@ -95,11 +86,11 @@ public class NFragment extends Fragment {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.buttonPressed();
+                mListener.buttonPressed(nextFragment, mString);
             }
 
         });
-        return (View) v;
+        return v;
     }
 
     public int[] getAnimation(){
@@ -110,12 +101,13 @@ public class NFragment extends Fragment {
         transitions[3] = animPopExit;
         return transitions;
     }
+
     @Override
-    public void onViewCreated(View v,
-            Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View v,
+                              Bundle savedInstanceState) {
         if(mString == null) {mString = " ";}
-        Log.d("NFRAGMENT","View Created with class name: " + mName);
         mListener.updateTextView(mText, mString);
+        mString = mString + " " + mName;
     }
 
     public void updateText(String text) {
@@ -123,7 +115,6 @@ public class NFragment extends Fragment {
     }
 
     public String getFName() {
-        Log.d("GET NAME", "theName: " + mName);
         return mName;
     }
 
@@ -132,8 +123,8 @@ public class NFragment extends Fragment {
     }
 
     public interface AttachListener {
-        public void buttonPressed();
-        public void updateTextView(TextView tv, String string);
+        void buttonPressed(String next, String text);
+        void updateTextView(TextView tv, String string);
     }
 
 }
