@@ -1,0 +1,11 @@
+{
+  "classpath": "projects.underhill.threebuttons.SecondFragment",
+  "transition": {
+  "enter": "fade_in",
+  "exit": "fade_out",
+  "popEnter": "fade_in",
+  "popExit": "fade_out"
+  },
+  "layout": "fragment_second",
+  "nextFragment":"third_fragment.json"
+}
